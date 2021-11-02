@@ -5,15 +5,11 @@ import (
 	"compress/gzip"
 	"context"
 	"flag"
-	"fmt"
-	"io/fs"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
-	"strings"
 	"syscall"
 
 	"github.com/golang/protobuf/proto"
@@ -35,6 +31,7 @@ import (
 
 var (
 	importPaths = StringsValue{Delimiter: ","}
+	protoFiles  = StringsValue{Delimiter: ","}
 	stubFiles   = StringsValue{Delimiter: ","}
 	stubDir     string
 
@@ -44,6 +41,7 @@ var (
 
 func init() {
 	flag.Var(&importPaths, "import-path", "The path to a directory from which proto sources can be imported, for use with -proto flags. Multiple import paths should be separated by comma")
+	flag.Var(&protoFiles, "proto", "The names of the proto source files.")
 	flag.Var(&stubFiles, "stub-files", "The names of stub files.")
 	flag.StringVar(&stubDir, "stub-dir", "", "The dir of stub files.")
 	flag.StringVar(&mockAddr, "mock-addr", ":22222", "The address mock server listens")
@@ -53,7 +51,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	fds, err := parseProtos(importPaths.Elements)
+	fds, err := parseProtos(importPaths.Elements, protoFiles.Elements)
 	if err != nil {
 		log.Fatalf("parse proto files failed: %v", err)
 	}
@@ -100,38 +98,10 @@ func main() {
 	}
 }
 
-func parseProtos(importPaths []string) ([]*desc.FileDescriptor, error) {
+func parseProtos(importPaths, protoFiles []string) ([]*desc.FileDescriptor, error) {
 	parser := protoparse.Parser{
 		ImportPaths: importPaths,
 	}
-
-	var protoFiles []string
-
-	for _, path := range importPaths {
-		err := filepath.Walk(path, func(p string, info fs.FileInfo, err error) error {
-			if strings.Contains(p, "message") {
-				return nil
-			}
-
-			if err != nil {
-				return err
-			}
-
-			if !strings.HasSuffix(info.Name(), ".proto") {
-				return nil
-			}
-
-			fmt.Printf("dir(%s), name(%s), path(%s)\n", p, info.Name(), path)
-			protoFiles = append(protoFiles, strings.TrimPrefix(p, path))
-
-			return nil
-		})
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	fmt.Printf("proto files: %v\n", protoFiles)
 
 	fds, err := parser.ParseFiles(protoFiles...)
 	if err != nil {

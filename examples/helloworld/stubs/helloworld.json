@@ -24,10 +24,7 @@
     },
     "out": {
       "data": {
-        "message": "hi numbers",
-        "created": {
-          "seconds": 16372184782
-        }
+        "message": "hi numbers"
       }
     }
   }

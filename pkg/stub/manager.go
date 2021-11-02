@@ -47,8 +47,8 @@ func (m *Manager) LoadStubsFromFile(dir string) error {
 			if err = m.AddStub(st); err != nil {
 				return err
 			}
-			log.Printf("stub added: %+v", st)
 		}
+		log.Printf("stub added: %s", file.Name())
 	}
 	return nil
 }
