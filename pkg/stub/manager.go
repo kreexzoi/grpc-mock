@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"sync"
-
-	log "github.com/golang/glog"
 )
 
 type Manager struct {
@@ -30,14 +29,14 @@ func (m *Manager) LoadStubsFromFile(dir string) error {
 	for _, file := range files {
 		data, err := ioutil.ReadFile(dir + "/" + file.Name())
 		if err != nil {
-			log.Infof("reading file %s failed: %v. skipping...", file.Name(), err)
+			log.Printf("reading file %s failed: %v. skipping...", file.Name(), err)
 			continue
 		}
 
 		var stubs []*Stub
 		err = json.Unmarshal(data, &stubs)
 		if err != nil {
-			log.Infof("unmarshal stubs from file %s failed: %v. skipping...", file.Name(), err)
+			log.Printf("unmarshal stubs from file %s failed: %v. skipping...", file.Name(), err)
 			continue
 		}
 		for _, st := range stubs {
@@ -45,7 +44,10 @@ func (m *Manager) LoadStubsFromFile(dir string) error {
 			if err != nil {
 				return err
 			}
-			m.AddStub(st)
+			if err = m.AddStub(st); err != nil {
+				return err
+			}
+			log.Printf("stub added: %+v", st)
 		}
 	}
 	return nil

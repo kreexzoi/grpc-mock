@@ -7,8 +7,9 @@ require (
 	github.com/golang/glog v1.0.0
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
-	github.com/jhump/protoreflect v1.5.0
+	github.com/jhump/protoreflect v1.10.1
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20211101193420-4a448f8816b3
 	golang.org/x/sys v0.0.0-20211102061401-a2f17f7b995c // indirect

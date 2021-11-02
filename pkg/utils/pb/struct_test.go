@@ -33,22 +33,22 @@ func TestToStruct(t *testing.T) {
 			want: &structpb.Struct{
 				Fields: map[string]*structpb.Value{
 					"nil": nil,
-					"number": &structpb.Value{
+					"number": {
 						Kind: &structpb.Value_NumberValue{
 							NumberValue: float64(100),
 						},
 					},
-					"string": &structpb.Value{
+					"string": {
 						Kind: &structpb.Value_StringValue{
 							StringValue: "name",
 						},
 					},
-					"bool": &structpb.Value{
+					"bool": {
 						Kind: &structpb.Value_BoolValue{
 							BoolValue: true,
 						},
 					},
-					"list": &structpb.Value{
+					"list": {
 						Kind: &structpb.Value_ListValue{
 							ListValue: &structpb.ListValue{
 								Values: []*structpb.Value{
@@ -65,16 +65,16 @@ func TestToStruct(t *testing.T) {
 							},
 						},
 					},
-					"struct": &structpb.Value{
+					"struct": {
 						Kind: &structpb.Value_StructValue{
 							StructValue: &structpb.Struct{
 								Fields: map[string]*structpb.Value{
-									"number": &structpb.Value{
+									"number": {
 										Kind: &structpb.Value_NumberValue{
 											NumberValue: float64(100),
 										},
 									},
-									"string": &structpb.Value{
+									"string": {
 										Kind: &structpb.Value_StringValue{
 											StringValue: "name",
 										},
@@ -102,25 +102,25 @@ func TestToMap(t *testing.T) {
 		{
 			in: &structpb.Struct{
 				Fields: map[string]*structpb.Value{
-					"nil": &structpb.Value{
+					"nil": {
 						Kind: &structpb.Value_NullValue{},
 					},
-					"number": &structpb.Value{
+					"number": {
 						Kind: &structpb.Value_NumberValue{
 							NumberValue: float64(100),
 						},
 					},
-					"string": &structpb.Value{
+					"string": {
 						Kind: &structpb.Value_StringValue{
 							StringValue: "name",
 						},
 					},
-					"bool": &structpb.Value{
+					"bool": {
 						Kind: &structpb.Value_BoolValue{
 							BoolValue: true,
 						},
 					},
-					"list": &structpb.Value{
+					"list": {
 						Kind: &structpb.Value_ListValue{
 							ListValue: &structpb.ListValue{
 								Values: []*structpb.Value{
@@ -137,16 +137,16 @@ func TestToMap(t *testing.T) {
 							},
 						},
 					},
-					"struct": &structpb.Value{
+					"struct": {
 						Kind: &structpb.Value_StructValue{
 							StructValue: &structpb.Struct{
 								Fields: map[string]*structpb.Value{
-									"number": &structpb.Value{
+									"number": {
 										Kind: &structpb.Value_NumberValue{
 											NumberValue: float64(100),
 										},
 									},
-									"string": &structpb.Value{
+									"string": {
 										Kind: &structpb.Value_StringValue{
 											StringValue: "name",
 										},

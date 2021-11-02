@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"io/fs"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -15,7 +16,6 @@ import (
 	"strings"
 	"syscall"
 
-	log "github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/jhump/protoreflect/desc"
@@ -58,7 +58,7 @@ func main() {
 		log.Fatalf("parse proto files failed: %v", err)
 	}
 	if len(fds) == 0 {
-		log.Infoln("no parsed file descriptors")
+		log.Println("no parsed file descriptors")
 		return
 	}
 
@@ -109,14 +109,20 @@ func parseProtos(importPaths []string) ([]*desc.FileDescriptor, error) {
 
 	for _, path := range importPaths {
 		err := filepath.Walk(path, func(p string, info fs.FileInfo, err error) error {
+			if strings.Contains(p, "message") {
+				return nil
+			}
+
 			if err != nil {
 				return err
 			}
 
-			if !info.IsDir() {
-				fmt.Printf("dir(%s), name(%s), path(%s)\n", p, info.Name(), path)
-				protoFiles = append(protoFiles, strings.TrimPrefix(p, path))
+			if !strings.HasSuffix(info.Name(), ".proto") {
+				return nil
 			}
+
+			fmt.Printf("dir(%s), name(%s), path(%s)\n", p, info.Name(), path)
+			protoFiles = append(protoFiles, strings.TrimPrefix(p, path))
 
 			return nil
 		})
@@ -151,11 +157,11 @@ func registerFileDescriptors(fds []*desc.FileDescriptor) (err error) {
 		fdp := protodesc.ToFileDescriptorProto(fd)
 		descBytes, err = createFileDescriptorBytes(fdp)
 		if err != nil {
-			log.Infof("register proto '%s' failed: %v", fd.Path(), err)
+			log.Printf("register proto '%s' failed: %v", fd.Path(), err)
 			return false
 		}
 		proto.RegisterFile(fd.Path(), descBytes)
-		log.Infoln("register proto", fd.Path())
+		log.Println("register proto", fd.Path())
 		return true
 	})
 	return
@@ -186,7 +192,7 @@ func startAPIServer(addr string, svr mockpb.MockServer) {
 	mux := runtime.NewServeMux()
 	mockpb.RegisterMockHandlerServer(context.Background(), mux, svr)
 
-	log.Infof("api server starts on %v", lsn.Addr().String())
+	log.Printf("api server starts on %v", lsn.Addr().String())
 	err = http.Serve(lsn, mux)
 	if err != nil {
 		log.Fatalf("api server serve failed: %v", err)
@@ -199,7 +205,7 @@ func startMockServer(addr string, sds []*grpc.ServiceDesc) {
 	if err != nil {
 		log.Fatalf("grpc mock server listen failed: %v", err)
 	}
-	log.Infof("grpc mock server starts on %v", lsn.Addr().String())
+	log.Printf("grpc mock server starts on %v", lsn.Addr().String())
 	for _, sd := range sds {
 		s.RegisterService(sd, nil)
 	}

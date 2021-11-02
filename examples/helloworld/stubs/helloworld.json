@@ -1,27 +1,34 @@
-[{
+[
+  {
     "service": "helloworld.Greeter",
     "method": "SayHello",
     "in": {
-        "equals": {
-            "name": "hi"
-        }
+      "equals": {
+        "name": "hi"
+      }
     },
     "out": {
-        "data": {
-            "message": "lemon"
-        }
+      "data": {
+        "message": "lemon",
+        "created": "2021-01-01T00:00:00.000Z"
+      }
     }
-},{
+  },
+  {
     "service": "helloworld.Greeter",
     "method": "SayHello",
     "in": {
-        "matches": {
-            "name": "^[0-9]+$"
-        }
+      "matches": {
+        "name": "^[0-9]+$"
+      }
     },
     "out": {
-        "data": {
-            "message": "hi numbers"
+      "data": {
+        "message": "hi numbers",
+        "created": {
+          "seconds": 16372184782
         }
+      }
     }
-}]
+  }
+]

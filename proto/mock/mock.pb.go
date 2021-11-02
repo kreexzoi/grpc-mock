@@ -20,14 +20,19 @@ It has these top-level messages:
 */
 package grpc_mock_api
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "google.golang.org/genproto/googleapis/api/annotations"
-import google_protobuf1 "github.com/golang/protobuf/ptypes/struct"
-
 import (
+	fmt "fmt"
+
+	proto "github.com/golang/protobuf/proto"
+
+	math "math"
+
+	_ "google.golang.org/genproto/googleapis/api/annotations"
+
+	google_protobuf1 "github.com/golang/protobuf/ptypes/struct"
+
 	context "golang.org/x/net/context"
+
 	grpc "google.golang.org/grpc"
 )
 
