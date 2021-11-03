@@ -61,6 +61,8 @@ func (m *Manager) FindStubs(service, method string, in map[string]interface{}) [
 		return stubs
 	}
 
+	log.Printf("incoming req: %+v", in)
+
 	for _, stub := range stubs {
 		if stub.Match(in) {
 			return []*Stub{stub}

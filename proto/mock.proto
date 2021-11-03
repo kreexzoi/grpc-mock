@@ -1,5 +1,5 @@
 syntax = "proto3";
-package github.com.monlabs.grpc_mock;
+package github.com.kreexzoi.grpc_mock;
 
 option go_package = "./mock;grpc_mock_api";
 
