@@ -7,7 +7,7 @@ grpc-mock implements the grpc mock server by reflections of `.proto` files inste
 ## From Source
 Use `go` tool to install:
 ```shell
-go get github.com/monlabs/grpc-mock/cmd/gmock
+go get github.com/kreexzoi/grpc-mock/cmd/gmock
 ```
 # Usage
 ## Quickstart
@@ -87,7 +87,7 @@ The output is:
   "message": "hi numbers"
 }
 ```
-More [examples](https://github.com/monlabs/grpc-mock/tree/main/examples)
+More [examples](https://github.com/kreexzoi/grpc-mock/tree/main/examples)
 ## Stubs
 The input and expected output comprise of a `Stub`. When a request is received, the mock server tries to match the stub with the request, and then reponds with the expected output in the matched stub. There're two ways to manage your stubs: static and dynamic.
 ### Static: predefine stubs in files.

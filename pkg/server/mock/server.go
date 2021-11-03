@@ -20,7 +20,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 
-	"github.com/monlabs/grpc-mock/pkg/stub"
+	"github.com/kreexzoi/grpc-mock/pkg/stub"
 )
 
 type StubMatcher interface {
