@@ -2,13 +2,15 @@ package api
 
 import (
 	"context"
+	"github.com/davecgh/go-spew/spew"
+	"log"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/monlabs/grpc-mock/pkg/stub"
-	pbutils "github.com/monlabs/grpc-mock/pkg/utils/pb"
-	mockpb "github.com/monlabs/grpc-mock/proto/mock"
+	"github.com/kreexzoi/grpc-mock/pkg/stub"
+	pbutils "github.com/kreexzoi/grpc-mock/pkg/utils/pb"
+	mockpb "github.com/kreexzoi/grpc-mock/proto/mock"
 )
 
 type StubManager interface {
@@ -39,6 +41,8 @@ func (s *Server) AddStubs(ctx context.Context, req *mockpb.AddStubsRequest) (*mo
 		if err := s.stubMgr.AddStub(stub); err != nil {
 			return nil, err
 		}
+
+		log.Printf("api stub added: %s", spew.Sdump(stub))
 	}
 	return &mockpb.AddStubsResponse{}, nil
 }

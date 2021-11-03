@@ -13,7 +13,7 @@ import (
 	"syscall"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jhump/protoreflect/desc"
 	"github.com/jhump/protoreflect/desc/protoparse"
 	"google.golang.org/grpc"
@@ -23,10 +23,10 @@ import (
 	"google.golang.org/protobuf/reflect/protoregistry"
 	dppb "google.golang.org/protobuf/types/descriptorpb"
 
-	api "github.com/monlabs/grpc-mock/pkg/server/api"
-	"github.com/monlabs/grpc-mock/pkg/server/mock"
-	"github.com/monlabs/grpc-mock/pkg/stub"
-	mockpb "github.com/monlabs/grpc-mock/proto/mock"
+	api "github.com/kreexzoi/grpc-mock/pkg/server/api"
+	"github.com/kreexzoi/grpc-mock/pkg/server/mock"
+	"github.com/kreexzoi/grpc-mock/pkg/stub"
+	mockpb "github.com/kreexzoi/grpc-mock/proto/mock"
 )
 
 var (
