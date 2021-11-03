@@ -3,6 +3,7 @@ package stub
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"io/ioutil"
 	"log"
 	"sync"
@@ -61,6 +62,8 @@ func (m *Manager) FindStubs(service, method string, in map[string]interface{}) [
 		return stubs
 	}
 
+	log.Printf("incoming req (%s/%s): %s", service, method, spew.Sdump(in))
+
 	for _, stub := range stubs {
 		if stub.Match(in) {
 			return []*Stub{stub}
@@ -79,6 +82,8 @@ func (m *Manager) AddStub(stub *Stub) error {
 		methods = make(map[string][]*Stub)
 		m.stubs[stub.Service] = methods
 	}
+
+	log.Printf("stub added: %s", spew.Sdump(stub))
 
 	methods[stub.Method] = append(methods[stub.Method], stub)
 	return nil
