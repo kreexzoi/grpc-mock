@@ -2,10 +2,9 @@ package stub
 
 import (
 	"errors"
+	"log"
 	"reflect"
 	"regexp"
-
-	log "github.com/golang/glog"
 )
 
 type Stub struct {
@@ -19,6 +18,7 @@ type Input struct {
 	Equals   map[string]interface{} `json:"equals"`
 	Contains map[string]interface{} `json:"contains"`
 	Matches  map[string]interface{} `json:"matches"`
+	Any      map[string]interface{} `json:"any"`
 }
 
 type Output struct {
@@ -51,6 +51,10 @@ func (s *Stub) Match(in map[string]interface{}) bool {
 		return false
 	}
 
+	if s.In.Any != nil {
+		return any(s.In.Any, in)
+	}
+
 	if s.In.Equals != nil {
 		return equals(s.In.Equals, in)
 	}
@@ -64,6 +68,16 @@ func (s *Stub) Match(in map[string]interface{}) bool {
 	}
 
 	return false
+}
+
+func any(fields, in map[string]interface{}) bool {
+	for field := range in {
+		if _, ok := fields[field]; !ok {
+			return false
+		}
+	}
+
+	return true
 }
 
 func equals(pattern, in map[string]interface{}) bool {
@@ -94,7 +108,7 @@ func matches(pattern, in map[string]interface{}) bool {
 
 		match, err := regexp.Match(pStr, []byte(valStr))
 		if err != nil {
-			log.Errorf("match regexp '%s' with '%s' failed: %v", pStr, valStr, err)
+			log.Printf("match regexp '%s' with '%s' failed: %v", pStr, valStr, err)
 		}
 
 		if !match {

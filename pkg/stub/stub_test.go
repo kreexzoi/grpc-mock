@@ -230,7 +230,8 @@ func TestStubMatch(t *testing.T) {
 				"age":   10,
 			},
 			want: false,
-		}, {
+		},
+		{
 			name: "matches-match",
 			st: &Stub{
 				Service: "srv.fake.tt",
@@ -247,7 +248,59 @@ func TestStubMatch(t *testing.T) {
 			},
 			want: true,
 		},
+		{
+			name: "any-mismatch-all",
+			st: &Stub{
+				Service: "srv.fake.tt",
+				Method:  "Hello",
+				In: &Input{
+					Any: map[string]interface{}{},
+				},
+				Out: &Output{},
+			},
+			in: map[string]interface{}{
+				"name": "",
+			},
+			want: false,
+		},
+		{
+			name: "any-mismatch",
+			st: &Stub{
+				Service: "srv.fake.tt",
+				Method:  "Hello",
+				In: &Input{
+					Any: map[string]interface{}{
+						"name": "asdf",
+					},
+				},
+				Out: &Output{},
+			},
+			in: map[string]interface{}{
+				"name":        "",
+				"middle-name": "",
+			},
+			want: false,
+		},
+		{
+			name: "any-match",
+			st: &Stub{
+				Service: "srv.fake.tt",
+				Method:  "Hello",
+				In: &Input{
+					Any: map[string]interface{}{
+						"name": "asdf",
+					},
+				},
+				Out: &Output{},
+			},
+			in: map[string]interface{}{
+				"name": []string{},
+			},
+			want: true,
+		},
 	}
+
+	t.Parallel()
 
 	for _, tc := range testCases {
 		b := tc.st.Match(tc.in)
