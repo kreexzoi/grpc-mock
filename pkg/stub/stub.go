@@ -37,8 +37,11 @@ func (s *Stub) Validate() error {
 	if s.In == nil {
 		return errors.New("missing input")
 	}
-	if len(s.In.Equals) == 0 && len(s.In.Contains) == 0 && len(s.In.Matches) == 0 {
-		return errors.New("require at least one of equals, contains or matches")
+	if len(s.In.Equals) == 0 &&
+		len(s.In.Contains) == 0 &&
+		len(s.In.Matches) == 0 &&
+		len(s.In.Any) == 0 {
+		return errors.New("require at least one of equals, contains, matches or any")
 	}
 	if s.Out == nil {
 		return errors.New("missing output")
